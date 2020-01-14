@@ -10,5 +10,20 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
-      - run: brew cask update
+      - run: brew update
       - run: brew cask install flash-player-debugger
+        id: install_flash_player_debugger
+        continue-on-error: true
+      - name: update_cask_family
+        if: steps.install_flash_player_debugger.outputs.status == 'failure'
+        run: |
+          set -ex
+          brew install jq
+          curl -sSLf `brew cask _stanza url flash-player-debugger` -o flash-player-debugger.dmg
+          sudo hdiutil attach flash-player-debugger.dmg
+          UPSTREAM_VERSON=`plutil -convert json "/Volumes/Flash Player/Flash Player.app/Contents/Info.plist" -o - | jq -r '.CFBundleVersion'`
+          cd `brew --repository homebrew/homebrew-cask`
+          git fetch --unshallow
+          ./developer/bin/update_cask_family flash "$UPSTREAM_VERSON"
+        env:
+          GITHUB_TOKEN: ${{ secrets.githubToken }}
