@@ -24,6 +24,7 @@ jobs:
           UPSTREAM_VERSON=`plutil -convert json "/Volumes/Flash Player/Flash Player.app/Contents/Info.plist" -o - | jq -r '.CFBundleVersion'`
           cd `brew --repository homebrew/homebrew-cask`
           git fetch --unshallow
+          ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
           ./developer/bin/update_cask_family flash "$UPSTREAM_VERSON"
         env:
           GITHUB_USER: ${{ secrets.githubUser }}
