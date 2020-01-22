@@ -26,4 +26,5 @@ jobs:
           git fetch --unshallow
           ./developer/bin/update_cask_family flash "$UPSTREAM_VERSON"
         env:
+          GITHUB_USER: ${{ secrets.githubUser }}
           GITHUB_TOKEN: ${{ secrets.githubToken }}
