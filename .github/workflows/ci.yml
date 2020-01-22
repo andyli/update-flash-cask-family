@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: brew update
-      - run: brew cask install flash-player-debugger
+      - run: brew cask install flash-player-debugger && echo ::set-output name=status::success
         id: install_flash_player_debugger
         continue-on-error: true
       - name: update_cask_family
