@@ -18,7 +18,7 @@ jobs:
         if: steps.install_flash_player_debugger.outputs.status != 'success'
         run: |
           set -ex
-          brew install jq
+          brew install jq vitorgalvao/tiny-scripts/cask-repair
           curl -sSLf `brew cask _stanza url flash-player-debugger` -o flash-player-debugger.dmg
           sudo hdiutil attach flash-player-debugger.dmg
           UPSTREAM_VERSON=`plutil -convert json "/Volumes/Flash Player/Flash Player.app/Contents/Info.plist" -o - | jq -r '.CFBundleVersion'`
