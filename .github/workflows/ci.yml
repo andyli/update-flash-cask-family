@@ -15,7 +15,7 @@ jobs:
         id: install_flash_player_debugger
         continue-on-error: true
       - name: update_cask_family
-        if: steps.install_flash_player_debugger.outputs.status == 'failure'
+        if: steps.install_flash_player_debugger.outputs.status != 'success'
         run: |
           set -ex
           brew install jq
