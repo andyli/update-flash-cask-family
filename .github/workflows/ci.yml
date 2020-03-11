@@ -23,7 +23,7 @@ jobs:
           sudo hdiutil attach flash-player-debugger.dmg
           UPSTREAM_VERSON=`plutil -convert json "/Volumes/Flash Player/Flash Player.app/Contents/Info.plist" -o - | jq -r '.CFBundleVersion'`
           cd `brew --repository homebrew/homebrew-cask`
-          git fetch --unshallow
+          git fetch --unshallow || true
           mkdir -p ~/.ssh
           ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
           git remote add "${GITHUB_USER}" "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/homebrew-cask.git"
