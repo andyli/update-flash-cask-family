@@ -26,8 +26,6 @@ jobs:
           git fetch --unshallow || true
           mkdir -p ~/.ssh
           ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-          git remote add "${GITHUB_USER}" "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/homebrew-cask.git"
           ./developer/bin/update_cask_family flash "$UPSTREAM_VERSON"
         env:
-          GITHUB_USER: ${{ secrets.githubUser }}
-          GITHUB_TOKEN: ${{ secrets.githubToken }}
+          HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.HOMEBREW_GITHUB_API_TOKEN }}
