@@ -26,7 +26,15 @@ jobs:
           git fetch --unshallow || true
           mkdir -p ~/.ssh
           ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-          ./developer/bin/update_cask_family flash "$UPSTREAM_VERSON"
+          if ! ./developer/bin/update_cask_family flash "$UPSTREAM_VERSON" ; then
+            git remote add andyli "https://andyli:${HOMEBREW_GITHUB_API_TOKEN}@github.com/andyli/homebrew-cask.git"
+            git fetch andyli
+            for branch in $(git for-each-ref --format='%(refname)' "refs/remotes/andyli/bump-flash-*-${UPSTREAM_VERSON}"); do
+              git checkout --track "$branch"
+              git rebase origin/master
+              git push andyli --force
+            done
+          fi
         env:
           HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.HOMEBREW_GITHUB_API_TOKEN }}
           GIT_AUTHOR_NAME: Andy Li
